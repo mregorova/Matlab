@@ -15,6 +15,7 @@ clear all; clc; close all;
 % Recommendation use xticks(), xticklabels().
 % 5) Save the plot as figure and PNG image with resolution at least 400 px. The name
 % of files should be: Data_Analisys.png
+
 %% Reading the file
 % TO-DO 1
 % Read the file from *.txt as a char stream
@@ -38,7 +39,8 @@ fclose(fileID);
 
 stream = lower(stream);
 stream_size = size(stream, 2);
-Data_Analisys = cell(50, 3);
+abc = unique(stream);
+Data_Analisys = cell(size(abc, 2), 3);
 
 stream_sorted = sort(stream);
 
@@ -58,8 +60,8 @@ for j = 2 : stream_size
     end
 end
 
-i = i + 1;
-Data_Analisys(i : end, :) = []; %deleting other cells
+%i = i + 1;
+%Data_Analisys(i : end, :) = []; %deleting other cells
 
 %% Plot Data
 % TO-DO 3
@@ -75,8 +77,8 @@ x = 1:size(symbols, 2);
 
 
 b = tiledlayout(2, 1);
-nexttile;
 
+nexttile;
 b1 = bar(probabilities);
 grid on;
 xticks(x); xticklabels(Data_Analisys(:, 1));
