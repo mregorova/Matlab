@@ -57,20 +57,48 @@ Ethalon_Matrix = Input_Matrix;
 Time_legacy_code_average = 0;
 Time_Optimised_code_average = 0;
 counter = 100;
+Data_legacy = zeros(1, 100);
+Data_Optimised = zeros(1, 100);
 
 for i = 1 : counter
     rng(i);
     Input_Matrix = Matrix_generator(num_row, num_col, lower_bound, upper_bound);
     [Legacy_output_Matrix, Time_legacy_code_iter] = Legacy_Instruction(Input_Matrix);
+    Data_legacy(i) = Time_legacy_code_iter;
     Time_legacy_code_average = Time_legacy_code_average + Time_legacy_code_iter;
     [Optimised_Output_Matrix, Time_Optimised_code_iter] = New_Instruction(Input_Matrix);
+    Data_Optimised(i) =  Time_Optimised_code_iter;
     Time_Optimised_code_average = Time_Optimised_code_average + Time_Optimised_code_iter;
 end
+
+Dev_legacy = std(Data_legacy);
+Dev_Optimised = std(Data_Optimised); %dev means deviation
 
 Time_legacy_code_average = Time_legacy_code_average / counter;
 Time_Optimised_code_average = Time_Optimised_code_average / counter;
 
 Efficiency = Time_legacy_code_average / Time_Optimised_code_average;
+
+%% Plot of dispersion
+
+x = 0:10:counter;
+
+
+b = tiledlayout(2, 1);
+
+nexttile;
+b1 = bar(Data_legacy);
+grid on;
+xticks(x); xticklabels(x);
+xlabel('Number'); ylabel('Legacy code execution time');
+title('Dispersion of legacy execution time');
+
+nexttile;
+b2 = bar(Data_Optimised);
+grid on;
+xticks(x); xticklabels(x);
+xlabel('Number'); ylabel('Optimised code execution time');
+title('Dispersion of optimised execution time');
 
 %% Checking the work of student
 % TO-DO 4
@@ -93,9 +121,19 @@ end
 % Runtime comparison
 % General efficiency is usually about 3
 
-% As we see, New_Instruction code is more optimised than Legacy_Instruction.
-% It is faster in 3 times (in average of 100 iterations) on my laptop, so it is better to use it for calculations.
+% We made sure that on every iteration time of execution is a random process
+% It is caused by influence of machine's power on matlab calculations
+% Let's calculate some parameters of this process and use them for conclusions
+% Usuallly Time_legacy_code_average is +-228, Time_Optimised_code_average is +-228 
+% To sum up, New_instruction is faster in General efficiency times
 
+fprintf("\n");
+fprintf("We made sure that on every iteration time of execution is a random process\n");
+fprintf("It is caused by influence of machine's power on matlab calculations\n");
+fprintf("Let's calculate some parameters of this process and use them for conclusions\n");
+fprintf("Usually Time_legacy_code_average is about %ld, Time_Optimised_code_average is about %ld\n", ...
+    Time_legacy_code_average, Time_Optimised_code_average);
+fprintf("To sum up, New_instruction is faster in %ld times\n", Efficiency);
 
 %% Function discribing
 
