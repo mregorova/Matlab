@@ -1,5 +1,6 @@
 % Clear workspace. Clear command window. Close all figure
 clear all; clc; close all;
+
 %% task
 % 0) Create a function
 % 1) Create the random matrix
@@ -52,26 +53,50 @@ Ethalon_Matrix = Input_Matrix;
 % Save the runtime in variable
 % Time_Optimised_code = TIME;
     
+%% Efficiency
+Time_legacy_code_average = 0;
+Time_Optimised_code_average = 0;
+counter = 100;
+
+for i = 1 : counter
+    rng(i);
+    Input_Matrix = Matrix_generator(num_row, num_col, lower_bound, upper_bound);
+    [Legacy_output_Matrix, Time_legacy_code_iter] = Legacy_Instruction(Input_Matrix);
+    Time_legacy_code_average = Time_legacy_code_average + Time_legacy_code_iter;
+    [Optimised_Output_Matrix, Time_Optimised_code_iter] = New_Instruction(Input_Matrix);
+    Time_Optimised_code_average = Time_Optimised_code_average + Time_Optimised_code_iter;
+end
+
+Time_legacy_code_average = Time_legacy_code_average / counter;
+Time_Optimised_code_average = Time_Optimised_code_average / counter;
+
+Efficiency = Time_legacy_code_average / Time_Optimised_code_average;
+
 %% Checking the work of student
 % TO-DO 4
 % Compare the matrix and elapsed time for instruction
 % Matrix must be equal each other, but the runtime sill be different
 
-if (Optimised_Output_Matrix == Legacy_output_Matrix)
-    fprintf("Matrices are equal\n");
-    fprintf("Function Legacy_Instruction: %ld\n", Time_legacy_code);
-    fprintf("Function New_Instruction: %ld\n", Time_Optimised_code);
+if (size(Optimised_Output_Matrix) == size(Legacy_output_Matrix))
+    if (Optimised_Output_Matrix == Legacy_output_Matrix)
+        fprintf("Matrices are equal\n");
+        fprintf("Function Legacy_Instruction: %ld\n", Time_legacy_code);
+        fprintf("Function New_Instruction: %ld\n", Time_Optimised_code);
+        fprintf("General efficiency: %ld\n", Efficiency)
+    else
+        fprintf("Matrices are not equal!\n")
+    end
 else
-    fprintf("Matrices are not equal!\n")
+    fprintf("Matrix size error!\n")
 end
 
 % Runtime comparison
-
-% Comparison of matrix
-    % Matrix size and value
+%General efficiency is usually about 3
 
 
-        
+
+%As we see, New_Instruction code is more optimised than Legacy_Instruction.
+%It is faster in 2 times, so it is better to use it for calculations.
 
 
 %% Function discribing
