@@ -56,7 +56,7 @@ Ethalon_Matrix = Input_Matrix;
 %% Efficiency
 Time_legacy_code_average = 0;
 Time_Optimised_code_average = 0;
-counter = 100;
+counter = 100; %number of iterations
 Data_legacy = zeros(1, counter);
 Data_Optimised = zeros(1, counter);
 
@@ -82,13 +82,13 @@ Efficiency = Time_legacy_code_average / Time_Optimised_code_average;
 
 %% Plot of dispersion
 
-x = linspace(0, 100);
+x = 0:counter-1;
 
 plot(x, Data_legacy, 'r', 'LineWidth', 2);
 hold on;
 plot(x, Data_Optimised, 'b', 'LineWidth', 2);
 
-xlabel('Number'); ylabel('Code execution time');
+xlabel('Number of iteration'); ylabel('Code execution time');
 title('Dispersion of legacy execution time');
 legend('legacy', 'optimised');
 grid on;
