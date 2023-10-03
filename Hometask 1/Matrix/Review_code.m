@@ -89,7 +89,7 @@ hold on;
 plot(x, Data_Optimised, 'b', 'LineWidth', 2);
 
 xlabel('Number of iteration'); ylabel('Code execution time');
-title('Dispersion of execution time');
+title('Execution time of code depending on the iteration number');
 legend('legacy', 'optimised');
 grid on;
 
