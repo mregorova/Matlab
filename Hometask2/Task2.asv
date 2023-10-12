@@ -1,0 +1,34 @@
+clear; clc; close all;
+
+amp = 3;
+freq = 1000;
+fs = 2500;
+dt = 1/fs;
+t = 0:dt:3-dt;
+signal = amp * sin(2*pi*freq*t);
+
+N = fs * 3;
+signal_spec = fft(signal,N);
+
+audiowrite('sinusoida1.wav', signal, fs);
+%audiowrite('sinusoida2.wav', signal, fs, 'BitsPerSample', 64);
+
+signal_norm = signal / (max(abs(signal)));
+%audiowrite('sinusoida.wav', signal_norm, fs);
+
+clipping_amp = 2;
+singal_clipped = signal .* (signal <=clipping_amp & signal >= -clipping_amp) + clipping_amp .* (signal >clipping_amp) + (-clipping_amp) * (signal < -clipping_amp);
+
+singal_clipped_spec = fft(singal_clipped);
+
+faxis = linspace(-fs/2,fs/2,N);
+
+figure;
+plot(t, signal, t, singal_clipped);
+xlabel('t'); ylabel('A'); title('signal & clipped signal');
+
+figure;
+plot(faxis/1000, fftshift(abs(signal_spec)), faxis/1000, fftshift(abs(singal_clipped_spec)));
+xlabel('f'); ylabel('A'); title('signal spectr & clipped signal spectr');
+
+%sound(singal_clipped, fd);
