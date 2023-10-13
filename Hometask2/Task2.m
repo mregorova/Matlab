@@ -27,3 +27,6 @@ xlabel('time'); ylabel('amplitude'); title('signal, clipped signal from freq');
 figure;
 plot(axis/1000, fftshift(abs(signal_spec)), axis/1000, fftshift(abs(singal_clipped_spec)));
 xlabel('frequency'); ylabel('amplitude'); title('signal spectrum, clipped signal spectrum from freq');
+
+fprintf("As can be seen from the graphs, after the clipping effect the fundamental harmonic became slightly " + ...
+        "less, but a few small ones appeared.")

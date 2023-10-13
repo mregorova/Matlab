@@ -71,3 +71,6 @@ p(3).LineWidth = 1;
 
 xlabel('k'); ylabel('A'); title('spectrum comparison');
 legend('original spectrum', 'spectrum after downsampling', 'spectrum after upampling');
+
+fprintf("When the sampling frequency is lowered, there are bursts of unnecessary " + ...
+        "harmonics. When increased, the spectrum remains almost unchanged.")
