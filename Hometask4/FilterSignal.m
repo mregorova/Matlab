@@ -1,7 +1,15 @@
-function FilteredNoisedSignal = FilterSignal(NoisedSignal, l_frec, u_frec, coef)
-
-    % Применение фильтра Баттерворта
-    fs = 1000;  % Частота дискретизации 
-    [b, a] = butter(4, [l_frec/ (fs/2), u_frec/ (fs/2)], 'bandpass');
-    FilteredNoisedSignal = filtfilt(b, a, NoisedSignal);
+function FilteredNoisedSignal = FilterSignal(NoisedSignal, freqLow, freqHigh, samplingFrequency)
+    % Выполнение FFT для исходного сигнала
+    signalSpectrum = fft(NoisedSignal);
+    
+    % Создание частотной оси
+    N = length(NoisedSignal);
+    f = (0:N-1)*(samplingFrequency/N);
+    
+    % Применение фильтра BandPass к спектру сигнала
+    passRegion = (f >= freqLow) & (f <= freqHigh);
+    signalSpectrumFiltered = signalSpectrum .* passRegion;
+    
+    % Обратное преобразование Фурье для получения отфильтрованного сигнала
+    FilteredNoisedSignal = ifft(signalSpectrumFiltered);
 end
