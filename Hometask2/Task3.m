@@ -7,10 +7,6 @@ n = 1:N;
 signal_spec = fft(signal, N);
 
 figure;
-plot(n, abs(signal(:, 1)));
-xlabel('n'); ylabel('A'); title('signal');
-
-figure;
 plot(n(1:N/2), abs(signal_spec(1:N/2, 1)));
 xlabel('n'); ylabel('A'); title('signal spectrum');
 
@@ -61,6 +57,8 @@ signal1_spec = signal1_spec/PowerSignal(signal1_spec);     %Normalize spectrums 
 signal2_spec = signal2_spec/PowerSignal(signal2_spec);
 
 figure;
+
+subplot(2, 1, 1)
 p = plot(n(1:N/2), abs(signal_spec(1:N/2, 1)), ...
      n1(1:N1/2), abs(signal1_spec(1:N1/2, 1)), ...
      n2(1:(N2+1)/2), abs(signal2_spec(1:(N2+1)/2, 1)));
@@ -69,8 +67,29 @@ p(1).LineWidth = 4;
 p(2).LineWidth = 3;
 p(3).LineWidth = 1;
 
-xlabel('k'); ylabel('A'); title('spectrum comparison');
-legend('original spectrum', 'spectrum after downsampling', 'spectrum after upampling');
+xlabel('Hz'); ylabel('A'); title('spectrum comparison');
+legend('original spectrum', 'spectrum after downsampling', 'spectrum after upsampling');
 
-fprintf("When the sampling frequency is lowered, there are bursts of unnecessary " + ...
-        "harmonics. When increased, the spectrum remains almost unchanged.")
+subplot(2, 1, 2)
+p = plot(n(1:N/2), 10*log10(abs(signal_spec(1:N/2, 1))), ...
+     n1(1:N1/2), 10*log10(abs(signal1_spec(1:N1/2, 1))), ...
+     n2(1:(N2+1)/2), 10*log10(abs(signal2_spec(1:(N2+1)/2, 1))));
+
+p(1).LineWidth = 4;
+p(2).LineWidth = 3;
+p(3).LineWidth = 1;
+
+xlabel('Hz'); ylabel('A'); title('logarithm scale spectrum comparison');
+legend('original spectrum', 'spectrum after downsampling', 'spectrum after upsampling');
+
+
+fprintf("As the sampling frequency increases, the signal spectrum is compressed twice" + ...
+        "along the frequency axis. This provides higher frequencies, as the signal" + ... 
+        "spectrum expands. Reducing the sampling frequency by half leads to a stretching" + ...
+        "of the spectrum by a factor of two, which can lead to the loss of high-frequency information." + ...
+        "Therefore, if the sampling frequency is increased, the resulting spectrum coincides" + ...
+        "with the original one in the first half. In the case of reduction, the first half" + ...
+        "of the spectrum of the original signal coincides with the spectrum obtained after" + ...
+        "reducing the sampling frequency. So when the sampling frequency is increased by 2" + ...
+        "times, sound quality improves noticeably. The sound becomes softer, clearer low" + ...
+        "frequencies are perceived.\n")
