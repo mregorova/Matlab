@@ -6,13 +6,12 @@ n = 1:frec;     %create an array of frequencies
 
 signal_spec = fft(signal);
 
-[max_amp, max_idx] = maxk(signal_spec(1:frec/2), 3);
+[max_amp, max_idx] = maxk(signal_spec(2:frec/2), 3);
 
 signal_spec_new = zeros(1, frec, "double");
 
-signal_spec_new(max_idx) = signal_spec(max_idx);   %for frecs less than 0
-signal_spec_new(frec - max_idx + 2) = signal_spec(max_idx);  %for frecs more than 0 add 2 
-                                                             % because of INDEXING FROM 1
+signal_spec_new(max_idx + 1) = signal_spec(max_idx);   %for frecs less than 0
+signal_spec_new(frec - max_idx) = signal_spec(max_idx);
 
 signal_new = ifft(signal_spec_new);
 
