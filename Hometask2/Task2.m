@@ -23,10 +23,12 @@ axis = linspace(-fs/2, fs/2, N);
 figure;
 plot(t, signal, t, singal_clipped);
 xlabel('time'); ylabel('amplitude'); title('signal, clipped signal from freq');
+legend('signal', 'signal clipped', 'Location', 'north');
 
 figure;
 plot(axis/1000, fftshift(abs(signal_spec)), axis/1000, fftshift(abs(singal_clipped_spec)));
 xlabel('frequency'); ylabel('amplitude'); title('signal spectrum, clipped signal spectrum from freq');
+legend('signal spectrum', 'signal clipped spectrum', 'Location', 'north');
 
 fprintf("As can be seen from the graphs, after the clipping effect the fundamental harmonic became slightly " + ...
         "less, but a few small ones appeared.")
