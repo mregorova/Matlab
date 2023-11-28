@@ -3,7 +3,7 @@ clear; clc; close all;
 [signal, fd] = audioread('voice2.wav');
 
 signal(signal==0) = [];
-signal = log10(abs(signal));
+signal = abs(signal);
 
 signal_spec = fft(signal);
 
