@@ -1,9 +1,8 @@
 clear; clc; close all;
 
-[signal, fd] = audioread('voice2.wav');
+[signal, fd] = audioread('voicewav.wav');
 
 signal(signal==0) = [];
-signal = abs(signal);
 
 signal_spec = fft(signal);
 
