@@ -64,7 +64,7 @@ for itter_c = 1 : 4
     for itter = 1 : idx_range
         IQ_RX_i = NoiseGenerator(IQ_TX_i, SNR_x(itter));
         Bit_Rx_i = demapping(IQ_RX_i, Constellation_i);
-        MER_res(itter_c, itter) = MER_my_func(IQ_RX_i, Constellation_i);
+        MER_res(itter_c, itter) = MER_function(IQ_RX_i, Constellation_i);
         delta(itter_c, itter) = abs(MER_res(itter_c, itter) - SNR_x(itter));
     end
 end
