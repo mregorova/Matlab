@@ -19,7 +19,6 @@ Eb_N0 = Eb_N0_convert(SNR, Constellation);
 
 % Use your own function of generating of AWGN from previous tasks
 IQ_RX = NoiseGenerator(IQ_TX, SNR);
-
 figure;
 
 %% Demapping
@@ -112,7 +111,7 @@ semilogy(SNR_x, BER_y, 'o-');
 legend('BPSK', 'QPSK', '8PSK', '16-QAM')
 grid on;
 title('experimental curves BER(SNR)')
-axis([-35 12 -5 0]);
+axis([-35 12 1e-4 1e0]);
 xlabel('SNR, dB');
 ylabel('BER(SNR)');
 savefig(h(2), 'BER_SNR.fig');
@@ -123,7 +122,7 @@ semilogy(Eb_N0_i(1, :), (BER_y(1, :)), 'o-', ...
      Eb_N0_i(3, :), (BER_y(3, :)), 'o-', ...
      Eb_N0_i(4, :), (BER_y(4, :)), 'o-');
 legend('BPSK', 'QPSK', '8PSK', '16-QAM')
-axis([-35 12 -5 0]);
+axis([-35 12 1e-4 1e0]);
 grid on;
 xlabel('Eb/N0, dB');
 ylabel('BER');
@@ -164,6 +163,7 @@ semilogy(EbN0_th_dB(1, :), (BER_th(1, :)), ...
     EbN0_th_dB(4, :), (BER_th(4, :)))
 axis([-35 12 -5 0])
 grid on;
+legend('BPSK', 'QPSK', '8PSK', '16-QAM');
 ylabel('log10(BER)')
 xlabel('E_b/N_0 (dB)')
 title('theoretical curves')
@@ -173,11 +173,11 @@ savefig(h(4), 'BER_theory.fig');
 
 h(5) = figure;
 subplot(2,2,1);
-p1 = semilogy(EbN0_th_dB(1, :), (BER_th(1, :)), Eb_N0_i(1, :), BER_y(1, :), '-o');
+p1 = semilogy(EbN0_th_dB(1, :), (BER_th(1, :)), Eb_N0_i(1, :), BER_y(1, :), 'o-');
 p1(1).LineWidth = 2;
 axis([-35 12 -5 0])
 grid on;
-legend('dash line', 'solid line');
+legend('theoretical', 'experimental');
 ylabel('log10(BER)')
 xlabel('E_b/N_0 (dB)')
 title('BPSK')
@@ -187,7 +187,7 @@ p2 = semilogy(EbN0_th_dB(2, :), (BER_th(2, :)), Eb_N0_i(2, :), BER_y(2, :), 'o-'
 p2(1).LineWidth = 2;
 axis([-35 12 -5 0])
 grid on;
-legend('dash line', 'solid line');
+legend('theoretical', 'experimental');
 ylabel('log10(BER)')
 xlabel('E_b/N_0 (dB)')
 title('QPSK')
@@ -197,7 +197,7 @@ p3 = semilogy(EbN0_th_dB(3, :), (BER_th(3, :)), Eb_N0_i(3, :), BER_y(3, :), 'o-'
 p3(1).LineWidth = 2;
 axis([-35 12 -5 0])
 grid on;
-legend('dash line', 'solid line');
+legend('theoretical', 'experimental');
 ylabel('log10(BER)')
 xlabel('E_b/N_0 (dB)')
 title('8PSK')
@@ -207,7 +207,7 @@ p4 = semilogy(EbN0_th_dB(4, :), (BER_th(4, :)), Eb_N0_i(4, :), BER_y(4, :), 'o-'
 p4(1).LineWidth = 2;
 axis([-35 12 -5 0])
 grid on;
-legend('dash line', 'solid line');
+legend('theoretical', 'experimental');
 ylabel('log10(BER)')
 xlabel('E_b/N_0 (dB)')
 title('16-QAM')
