@@ -49,17 +49,18 @@ ylabel("Корреляция");
 grid on;
 
 savefig("Frame_Corr.fig");
+coeff = 7.5; %создаём домножающий коэффициент для растягивания графика автокорреляции
 
 figure;
 subplot(2, 1, 1)
-plot(1:1:len*10, autocor(gold_seq, len*10))
+plot(1:1:len*coeff, autocor(gold_seq, len*coeff))
 title("Автокорреляция последовательноти кода Голда от номера бита");
 ylabel("Корреляция");
 xlabel("Смещение");
 grid on;
 
 subplot(2, 1, 2)
-plot(1:1:len*10, autocor(m_seq, len*10))
+plot(1:1:len*coeff, autocor(m_seq, len*coeff))
 title("Автокорреляция М-последовательности от номера бита");
 ylabel("Корреляция");
 xlabel("Смещение");
