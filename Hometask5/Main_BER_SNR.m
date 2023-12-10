@@ -2,8 +2,8 @@ close all; clear; clc;
 
 %% Init parametrs of model
 Length_Bit_vector = 1e5;
-Constellation = "BPSK"; % QPSK, 8PSK, 16-QAM
-SNR = 30; % dB
+Constellation = "QPSK"; % QPSK, 8PSK, 16-QAM
+SNR = 20; % dB
 
 %% Bit generator
 Bit_Tx = randi([0,1], 1, Length_Bit_vector);
@@ -11,7 +11,7 @@ Bit_Tx = randi([0,1], 1, Length_Bit_vector);
 %% Mapping
 IQ_TX = mapping(Bit_Tx, Constellation);
 
-dict_const(IQ_TX, Constellation);
+[Dictionary, Bit_depth_Dict] = dict_function(Constellation);
 
 %% Channel
 % Write your own function Eb_N0_convert(), which convert SNR to Eb/N0
@@ -19,7 +19,23 @@ Eb_N0 = Eb_N0_convert(SNR, Constellation);
 
 % Use your own function of generating of AWGN from previous tasks
 IQ_RX = NoiseGenerator(IQ_TX, SNR);
+
 figure;
+plot(IQ_RX, '.');
+text(real(Dictionary) + 0.2, imag(Dictionary) + 0.2, Bit_depth_Dict);
+
+hold on;
+plot(Dictionary, 'x');
+xlabel('I');
+ylabel('Q');
+
+ax = gca;
+axis equal;
+ax.XAxisLocation = 'origin';
+ax.YAxisLocation = 'origin';
+
+title("Constellation diagram with noise");
+grid on;
 
 %% Demapping
 Bit_Rx = demapping(IQ_RX, Constellation);
@@ -38,8 +54,6 @@ MER_estimation = MER_function(IQ_RX, Constellation);
 % Discribe the results. Make an conclusion about MER.
 % You can use the cycle for collecting of data
 % Save figure
-
-close all; clear; clc;
 
 SNR_bound = 50;
 idx_range = SNR_bound*2 + 1;
@@ -89,6 +103,7 @@ ylabel('MER true value - MER experiment(SNR)');
 % You can use the cycle for collecting of data
 % Save figure
 
+tic
 Eb_N0_i = zeros(4, idx_range);
 BER_y = zeros(4, idx_range);
 
@@ -105,13 +120,14 @@ for itter_c = 1 : 4
         BER_y(itter_c, itter) = Error_check(Bit_Tx_i, Bit_Rx_i);
     end
 end
+toc
 
 h(2) = figure;
 semilogy(SNR_x, BER_y, 'o-');
 legend('BPSK', 'QPSK', '8PSK', '16-QAM')
 grid on;
 title('experimental curves BER(SNR)')
-axis([-35 12 1e-4 1e0]);
+axis([-10 20 1e-4 1e0]);
 xlabel('SNR, dB');
 ylabel('BER(SNR)');
 savefig(h(2), 'BER_SNR.fig');
@@ -122,7 +138,7 @@ semilogy(Eb_N0_i(1, :), (BER_y(1, :)), 'o-', ...
      Eb_N0_i(3, :), (BER_y(3, :)), 'o-', ...
      Eb_N0_i(4, :), (BER_y(4, :)), 'o-');
 legend('BPSK', 'QPSK', '8PSK', '16-QAM')
-axis([-35 12 1e-4 1e0]);
+axis([-20 12 1e-4 1e0]);
 grid on;
 xlabel('Eb/N0, dB');
 ylabel('BER');
@@ -136,6 +152,7 @@ savefig(h(3), 'BER_EBN0.fig');
 % 8PSK and 16QAM constellation
 % Save figure
 
+tic
 SNR_th_dB = -SNR_bound:0.1:SNR_bound;
 
 EbN0_th_dB = zeros(4, length(SNR_th_dB));
@@ -155,13 +172,14 @@ BER_th(1, :) = 1/2.*erfc(sqrt(EbN0_th(1, :)));
 BER_th(2, :) = 1/2.*erfc(sqrt(EbN0_th(2, :)));
 BER_th(3, :) = 2/3.*erfc(sqrt(6*EbN0_th(3, :))*sin(pi/8));
 BER_th(4, :) = erfc(sqrt(12*EbN0_th(4, :)/15));
+toc
 
 h(4) = figure;
 semilogy(EbN0_th_dB(1, :), (BER_th(1, :)), ...
     EbN0_th_dB(2, :), (BER_th(2, :)), ...
     EbN0_th_dB(3, :), (BER_th(3, :)), ...
     EbN0_th_dB(4, :), (BER_th(4, :)))
-axis([-35 12 -5 0])
+axis([-25 12 -5 0])
 grid on;
 legend('BPSK', 'QPSK', '8PSK', '16-QAM');
 ylabel('log10(BER)')
@@ -175,7 +193,7 @@ h(5) = figure;
 subplot(2,2,1);
 p1 = semilogy(EbN0_th_dB(1, :), (BER_th(1, :)), Eb_N0_i(1, :), BER_y(1, :), 'o-');
 p1(1).LineWidth = 2;
-axis([-35 12 -5 0])
+axis([-25 12 -5 0])
 grid on;
 legend('theoretical', 'experimental');
 ylabel('log10(BER)')
@@ -185,7 +203,7 @@ title('BPSK')
 subplot(2,2,2);
 p2 = semilogy(EbN0_th_dB(2, :), (BER_th(2, :)), Eb_N0_i(2, :), BER_y(2, :), 'o-');
 p2(1).LineWidth = 2;
-axis([-35 12 -5 0])
+axis([-25 12 -5 0])
 grid on;
 legend('theoretical', 'experimental');
 ylabel('log10(BER)')
@@ -195,7 +213,7 @@ title('QPSK')
 subplot(2,2,3);
 p3 = semilogy(EbN0_th_dB(3, :), (BER_th(3, :)), Eb_N0_i(3, :), BER_y(3, :), 'o-');
 p3(1).LineWidth = 2;
-axis([-35 12 -5 0])
+axis([-25 12 -5 0])
 grid on;
 legend('theoretical', 'experimental');
 ylabel('log10(BER)')
@@ -205,7 +223,7 @@ title('8PSK')
 subplot(2,2,4);
 p4 = semilogy(EbN0_th_dB(4, :), (BER_th(4, :)), Eb_N0_i(4, :), BER_y(4, :), 'o-');
 p4(1).LineWidth = 2;
-axis([-35 12 -5 0])
+axis([-25 12 -5 0])
 grid on;
 legend('theoretical', 'experimental');
 ylabel('log10(BER)')
