@@ -9,14 +9,15 @@ header = 0;
 start = 0;
 finish = 0;
 
+
 while i < xcorr_len
     %fprintf("%d\n", xcorr(it));
-    if xcorr(i) > 0.8*1
+    if xcorr(i) > 0.9*1
         j = 0;
         start = i;
 
         while j <= (xcorr_len - i)
-            if xcorr(i + j) < 0.8*1
+            if xcorr(i + j) < 0.9*1
                 finish = i + j;
                 j = xcorr_len + 100;
             else
@@ -37,6 +38,6 @@ end
 Data_Length = flags(2) - flags(1) - len;
 Frame_Length = Data_Length + len;
 Start_Of_Frame_Position = fix(flags(1));
-Number_Of_Frames = header - 1;
+Number_Of_Frames = header;
 
 end
